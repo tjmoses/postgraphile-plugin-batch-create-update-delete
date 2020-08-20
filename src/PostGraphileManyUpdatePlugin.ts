@@ -104,7 +104,7 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
 
       const tableTypeName = namedType.name;
       const uniqueConstraints = table.constraints.filter(
-        con => con.type === 'u' || con.type === 'p'
+        con => con.type === 'p'
       );
 
       // Setup and add the GraphQL Payload type
@@ -301,6 +301,8 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
           let hasConstraintValue = false;
 
           inputData.forEach((dataObj, i) => {
+            let setOfRcvdDataHasPKValue = false;
+
             relevantAttributes.forEach((attr: T.PgAttribute) => {
               const fieldName = inflection.column(attr);
               const dataValue = dataObj[fieldName];
@@ -327,8 +329,9 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
                 ];
                 if (!isConstraintAttr) {
                   usedColSQLVals[i] = [...usedColSQLVals[i], sql.raw('true')];
+                } else {
+                  setOfRcvdDataHasPKValue = true;
                 }
-                if (isConstraintAttr) hasConstraintValue = true;
               } else {
                 sqlValues[i] = [...sqlValues[i], sql.raw('NULL')];
                 if (!isConstraintAttr) {
@@ -336,6 +339,9 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
                 }
               }
             });
+            if (!setOfRcvdDataHasPKValue) {
+              hasConstraintValue = false;
+            }
           });
 
           if (!hasConstraintValue) {

@@ -104,7 +104,7 @@ const PostGraphileManyDeletePlugin: T.Plugin = (
 
       const tableTypeName = namedType.name;
       const uniqueConstraints = table.constraints.filter(
-        con => con.type === 'u' || con.type === 'p'
+        con => con.type === 'p'
       );
 
       // Setup and add the GraphQL Payload Type
@@ -331,6 +331,8 @@ const PostGraphileManyDeletePlugin: T.Plugin = (
           let hasConstraintValue = false;
 
           inputData.forEach((dataObj, i) => {
+            let setOfRcvdDataHasPKValue = false;
+            
             relevantAttributes.forEach((attr: T.PgAttribute) => {
               const fieldName = inflection.column(attr);
               const dataValue = dataObj[fieldName];
@@ -348,9 +350,14 @@ const PostGraphileManyDeletePlugin: T.Plugin = (
                   ...sqlValues[i],
                   gql2pg(dataValue, attr.type, attr.typeModifier)
                 ];
-                if (isConstraintAttr) hasConstraintValue = true;
+                if (isConstraintAttr) {
+                  setOfRcvdDataHasPKValue = true;
+                }
               }
             });
+            if (!setOfRcvdDataHasPKValue) {
+              hasConstraintValue = false;
+            }
           });
 
           if (!hasConstraintValue) {
