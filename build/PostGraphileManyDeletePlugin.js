@@ -49,7 +49,7 @@ const PostGraphileManyDeletePlugin = (builder, options) => {
                 throw new Error(`Could not find TablePatch type for table '${table.name}'`);
             }
             const tableTypeName = namedType.name;
-            const uniqueConstraints = table.constraints.filter(con => con.type === 'u' || con.type === 'p');
+            const uniqueConstraints = table.constraints.filter(con => con.type === 'p');
             // Setup and add the GraphQL Payload Type
             const newPayloadHookType = GraphQLObjectType;
             const newPayloadHookSpec = {
@@ -185,6 +185,7 @@ const PostGraphileManyDeletePlugin = (builder, options) => {
                     const sqlValues = Array(inputData.length).fill([]);
                     let hasConstraintValue = false;
                     inputData.forEach((dataObj, i) => {
+                        let setOfRcvdDataHasPKValue = false;
                         relevantAttributes.forEach((attr) => {
                             const fieldName = inflection.column(attr);
                             const dataValue = dataObj[fieldName];
@@ -202,10 +203,14 @@ const PostGraphileManyDeletePlugin = (builder, options) => {
                                     ...sqlValues[i],
                                     gql2pg(dataValue, attr.type, attr.typeModifier)
                                 ];
-                                if (isConstraintAttr)
-                                    hasConstraintValue = true;
+                                if (isConstraintAttr) {
+                                    setOfRcvdDataHasPKValue = true;
+                                }
                             }
                         });
+                        if (!setOfRcvdDataHasPKValue) {
+                            hasConstraintValue = false;
+                        }
                     });
                     if (!hasConstraintValue) {
                         throw new Error(`You must provide the primary key(s) in the provided data for deletes on '${inflection.pluralize(inflection._singularizedTableName(table))}'`);

@@ -49,7 +49,7 @@ const PostGraphileManyUpdatePlugin = (builder, options) => {
                 throw new Error(`Could not find TablePatch type for table '${table.name}'`);
             }
             const tableTypeName = namedType.name;
-            const uniqueConstraints = table.constraints.filter(con => con.type === 'u' || con.type === 'p');
+            const uniqueConstraints = table.constraints.filter(con => con.type === 'p');
             // Setup and add the GraphQL Payload type
             const newPayloadHookType = GraphQLObjectType;
             const newPayloadHookSpec = {
@@ -172,6 +172,7 @@ const PostGraphileManyUpdatePlugin = (builder, options) => {
                     const usedColSQLVals = Array(inputData.length).fill([]);
                     let hasConstraintValue = false;
                     inputData.forEach((dataObj, i) => {
+                        let setOfRcvdDataHasPKValue = false;
                         relevantAttributes.forEach((attr) => {
                             const fieldName = inflection.column(attr);
                             const dataValue = dataObj[fieldName];
@@ -197,8 +198,9 @@ const PostGraphileManyUpdatePlugin = (builder, options) => {
                                 if (!isConstraintAttr) {
                                     usedColSQLVals[i] = [...usedColSQLVals[i], sql.raw('true')];
                                 }
-                                if (isConstraintAttr)
-                                    hasConstraintValue = true;
+                                else {
+                                    setOfRcvdDataHasPKValue = true;
+                                }
                             }
                             else {
                                 sqlValues[i] = [...sqlValues[i], sql.raw('NULL')];
@@ -207,6 +209,9 @@ const PostGraphileManyUpdatePlugin = (builder, options) => {
                                 }
                             }
                         });
+                        if (!setOfRcvdDataHasPKValue) {
+                            hasConstraintValue = false;
+                        }
                     });
                     if (!hasConstraintValue) {
                         throw new Error(`You must provide the primary key(s) in the updated data for updates on '${inflection.pluralize(inflection._singularizedTableName(table))}'`);

@@ -1,1 +1,1 @@
-{"version":3,"file":"PostGraphileManyDeletePlugin.d.ts","sourceRoot":"","sources":["../src/PostGraphileManyDeletePlugin.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,CAAC,MAAM,eAAe,CAAC;AAKnC,QAAA,MAAM,4BAA4B,EAAE,CAAC,CAAC,MAobrC,CAAC;AACF,eAAe,4BAA4B,CAAC"}
+{"version":3,"file":"PostGraphileManyDeletePlugin.d.ts","sourceRoot":"","sources":["../src/PostGraphileManyDeletePlugin.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,CAAC,MAAM,eAAe,CAAC;AAKnC,QAAA,MAAM,4BAA4B,EAAE,CAAC,CAAC,MA2brC,CAAC;AACF,eAAe,4BAA4B,CAAC"}
