@@ -1,0 +1,47 @@
+{
+  "name": "postgraphile-plugin-many-create-update-delete",
+  "version": "1.0.0",
+  "description": "Postgraphile plugin that enables many create, update, & delete mutations in a single transaction.",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjmoses/postgraphile-plugin-many-create-update-delete.git"
+  },
+  "keywords": [
+    "postgraphile",
+    "many",
+    "create",
+    "mutations",
+    "many",
+    "update",
+    "mutations",
+    "many",
+    "delete",
+    "mutations"
+  ],
+  "author": "Tim M",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tjmoses/postgraphile-plugin-many-create-update-delete/issues"
+  },
+  "homepage": "https://github.com/tjmoses/postgraphile-plugin-many-create-update-delete#readme",
+  "dependencies": {
+    "postgraphile": "^4.7.0",
+    "graphile-utils": "^4.5.6"
+  },
+  "devDependencies": {
+    "@types/nanographql": "^2.0.1",
+    "@types/pg": "^7.14.4",
+    "@typescript-eslint/parser": "^3.6.0",
+    "graphile-build": "^4.7.0",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.9.6",
+    "prettier-standard": "^16.4.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "rimraf ./build && npx tsc",
+    "format": "npx prettier-standard 'src/*.{ts,tsx}'",
+    "lint": "npx prettier-standard 'src/*.{ts,tsx}' --fix"
+  }
+}
