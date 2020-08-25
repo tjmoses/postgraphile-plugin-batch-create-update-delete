@@ -220,7 +220,7 @@ const PostGraphileManyDeletePlugin = (builder, options) => {
                     const mutationQuery = sql.query `\
             DELETE FROM ${sql.identifier(table.namespace.name, table.name)}
             WHERE
-              (${sql.join(sqlValues.map((dataGroup, i) => sql.fragment `(${sql.join(dataGroup.map((val, j) => sql.fragment `${sqlColumns[j]} = ${val}`), ') and (')})`), ') or (')})
+              (${sql.join(sqlValues.map((dataGroup, i) => sql.fragment `(${sql.join(dataGroup.map((val, j) => sql.fragment `"${sqlColumns[j]}" = ${val}`), ') and (')})`), ') or (')})
             RETURNING *
           `;
                     const modifiedRowAlias = sql.identifier(Symbol());

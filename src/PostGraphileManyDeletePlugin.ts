@@ -378,7 +378,7 @@ const PostGraphileManyDeletePlugin: T.Plugin = (
                   (dataGroup, i) =>
                     sql.fragment`(${sql.join(
                       dataGroup.map(
-                        (val, j) => sql.fragment`${sqlColumns[j]} = ${val}`
+                        (val, j) => sql.fragment`"${sqlColumns[j]}" = ${val}`
                       ),
                       ') and ('
                     )})`
