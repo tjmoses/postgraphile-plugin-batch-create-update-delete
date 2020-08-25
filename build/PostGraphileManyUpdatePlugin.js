@@ -170,7 +170,7 @@ const PostGraphileManyUpdatePlugin = (builder, options) => {
                     const sqlValues = Array(inputData.length).fill([]);
                     const usedSQLColumns = [];
                     const usedColSQLVals = Array(inputData.length).fill([]);
-                    let hasConstraintValue = false;
+                    let hasConstraintValue = true;
                     inputData.forEach((dataObj, i) => {
                         let setOfRcvdDataHasPKValue = false;
                         relevantAttributes.forEach((attr) => {

@@ -183,7 +183,7 @@ const PostGraphileManyDeletePlugin = (builder, options) => {
                     const sqlColumns = [];
                     const inputData = input[`mn${inflection.upperCamelCase(inflection.patchField(inflection.tableFieldName(table)))}`];
                     const sqlValues = Array(inputData.length).fill([]);
-                    let hasConstraintValue = false;
+                    let hasConstraintValue = true;
                     inputData.forEach((dataObj, i) => {
                         let setOfRcvdDataHasPKValue = false;
                         relevantAttributes.forEach((attr) => {
