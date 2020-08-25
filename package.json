@@ -1,6 +1,6 @@
 {
   "name": "postgraphile-plugin-many-create-update-delete",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Postgraphile plugin that enables many create, update, & delete mutations in a single transaction.",
   "main": "build/index.js",
   "repository": {

@@ -328,7 +328,7 @@ const PostGraphileManyDeletePlugin: T.Plugin = (
               )}`
             ];
           const sqlValues: T.SQL[][] = Array(inputData.length).fill([]);
-          let hasConstraintValue = false;
+          let hasConstraintValue = true;
 
           inputData.forEach((dataObj, i) => {
             let setOfRcvdDataHasPKValue = false;
