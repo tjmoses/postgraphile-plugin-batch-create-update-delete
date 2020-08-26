@@ -314,7 +314,12 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
               if (i === 0 && !isConstraintAttr) {
                 sqlColumns.push(sql.raw(attr.name));
                 usedSQLColumns.push(sql.raw('use_' + attr.name));
-                sqlColumnTypes.push(sql.raw(attr.type.name));
+                // Handle custom types
+                if (attr.type.namespaceName !== 'pg_catalog') {
+                  sqlColumnTypes.push(sql.raw(attr.class.namespaceName + '.' + attr.type.name));
+                } else {
+                  sqlColumnTypes.push(sql.raw(attr.type.name));
+                }
               }
               // Get all of the attributes
               if (i === 0) {
@@ -360,7 +365,7 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
             ${sql.join(
               sqlColumns.map(
                 (col, i) =>
-                  sql.fragment`${col} = (CASE WHEN t2.use_${col} THEN t2.${col}::${sqlColumnTypes[i]} ELSE t1.${col} END)`
+                  sql.fragment`"${col}" = (CASE WHEN t2."use_${col}" THEN t2."${col}"::${sqlColumnTypes[i]} ELSE t1."${col}" END)`
               ),
               ', '
             )}
@@ -378,9 +383,9 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
                ) t2(
                  ${sql.join(
                    allSQLColumns
-                     .map(col => sql.fragment`${col}`)
+                     .map(col => sql.fragment`"${col}"`)
                      .concat(
-                       usedSQLColumns.map(useCol => sql.fragment`${useCol}`)
+                       usedSQLColumns.map(useCol => sql.fragment`"${useCol}"`)
                      ),
                    ', '
                  )}
@@ -395,7 +400,7 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
             ') and ('
           )})`}
           RETURNING ${sql.join(
-            allSQLColumns.map(col => sql.fragment`t1.${col}`),
+            allSQLColumns.map(col => sql.fragment`t1."${col}"`),
             ', '
           )}
           `;
