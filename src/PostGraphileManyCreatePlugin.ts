@@ -253,6 +253,7 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
           input[
             `mn${inflection.upperCamelCase(inflection.tableFieldName(table))}`
           ];
+        if (!inputData || inputData.length === 0) return null;
         const sqlValues: T.SQL[][] = Array(inputData.length).fill([]);
 
         inputData.forEach((dataObj, i) => {

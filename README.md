@@ -5,6 +5,16 @@
 
 This plugin implements mutations that allow many creates, updates, and deletes in a single transaction.
 
+## Roadmap
+Work is ongoing, here's the plan:
+
+- [ ] Add a test suite, CI, and better test example in the readme.
+- [ ] Update smart comments with better functionality to include individual create, update, or  delete mutations vs. including them all together.
+- [ ] Add plugin options that allow conflict handling for inserts. This would allow updates (upsert), no action, failures (current default) based off the constraints or further options.
+- [ ] Add input types for the many updates and delete mutations, to show required constraints vs. using the table patch types that do not.
+- [ ] Add better returned payload options, preferably to return a list of modified records.
+- [ ] Add support for node id based updates and deletes.
+
 ## Getting Started
 
 View the [postgraphile docs](https://www.graphile.org/postgraphile/extending/#loading-additional-plugins) for information about loading the plugin via the CLI or as a NodeJS library.
@@ -27,7 +37,7 @@ You must use smart comments to enable the many create, update, and delete mutati
 
 ```sql
 comment on table public."Test" is
-  E'@mncud The test table is just for showing this example with comments.';
+  E'@mncud\n The test table is just for showing this example with comments.';
 ```
 
 ## Usage
@@ -35,10 +45,10 @@ comment on table public."Test" is
 The plugin creates new mutations that allow you to batch create, update, and delete items from a given table. It works with primary keys for updates and deletes using the input patch that postgraphile generates. All creates, updates, and deletes have scoped names with "mn" in front of the mutation name to prevent conflicts with other mutations.
 
 ### Creates
-```mnCreateTest``` would be an example mutation name, and we'll say it has attributes of test1 (a boolean), and name (a varchar). You'll see the required input has the clientMutationId and also a field called ```mnTest```, where ```mnTest``` will take an array of items that use the table input type. Since it uses the table input type, the required items are all listed as expected.
+```mnCreateTest``` would be an example mutation name, and we'll say it has attributes of test1 (a boolean), and name (a varchar). You'll see the required input has the clientMutationId and also a field called ```mnTest```, where ```mnTest``` will take an array of items that use the table input type. Since it uses the table input type, the required items are all listed as expected. When creating records, any attributes left off will have their values set to ```default```.
 
 ### Updates
-```mnUpdateTestByName``` would be the update example name, assuming the name is the primary key. Updates have a required input with the clientMutatationId and a patch. The patch field accepts an array of table patch items. You ***MUST*** provide the primary key within the patch items b/c that is what's used in the where clause to update the correct row.
+```mnUpdateTestByName``` would be the update example name, assuming the name is the primary key. Updates have a required input with the clientMutatationId and a patch. The patch field accepts an array of table patch items. You ***MUST*** provide the primary key within the patch items b/c that is what's used in the where clause to update the correct row(s). Attributes that are not provided in the list of provided values, will not be updated. With that said, you can update different attributes in one record and leave them off in another and it will update both as expected.
 
 ### Deletes
-```mnDeleteTestByName``` would be the delete example name. Deletes have a required input with the clientMutationId and a patch. The patch field accepts an array of table patch items, but only the primary key items are used. You ***MUST*** provide the primary key within the patch items b/c that is what's used in the where clause to update the correct row.
+```mnDeleteTestByName``` would be the delete example name. Deletes have a required input with the clientMutationId and a patch. The patch field accepts an array of table patch items, but only the primary key items are used. You ***MUST*** provide the primary key(s) within the patch items b/c that is what's used in the where clause to delete the correct row(s).

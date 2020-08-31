@@ -294,6 +294,7 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
                 inflection.patchField(inflection.tableFieldName(table))
               )}`
             ];
+          if (!inputData || inputData.length === 0) return null;
           const sqlValues: T.SQL[][] = Array(inputData.length).fill([]);
 
           const usedSQLColumns: T.SQL[] = [];
