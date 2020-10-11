@@ -52,3 +52,14 @@ The plugin creates new mutations that allow you to batch create, update, and del
 
 ### Deletes
 ```mnDeleteTestByName``` would be the delete example name. Deletes have a required input with the clientMutationId and a patch. The patch field accepts an array of table patch items, but only the primary key items are used. You ***MUST*** provide the primary key(s) within the patch items b/c that is what's used in the where clause to delete the correct row(s).
+
+## Contribute
+
+1. Fork it and create your feature branch: `git checkout -b my-new-feature`
+2. Commit your changes: `git commit -am "Add some feature"`
+3. Push to the branch: `git push origin my-new-feature`
+4. Submit a pull request.
+
+## License
+
+MIT
