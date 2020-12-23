@@ -1,4 +1,4 @@
-# postgraphile-plugin-many-create-update-delete
+# postgraphile-plugin-batch-create-update-delete
 
 ![npm](https://img.shields.io/npm/v/postgraphile-plugin-many-create-update-delete)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
