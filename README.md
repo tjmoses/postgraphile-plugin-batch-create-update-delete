@@ -5,8 +5,10 @@
 
 This plugin implements mutations that allow many creates, updates, and deletes in a single transaction.
 
+To support, Please &#127775; if you used / like this library.
+
 ## Roadmap
-Work is ongoing, here's the plan:
+Here's the plan:
 
 - [ ] Add a test suite, CI, and better test example in the readme.
 - [ ] Update smart comments with better functionality to include individual create, update, or  delete mutations vs. including them all together.
