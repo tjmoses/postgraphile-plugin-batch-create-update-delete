@@ -98,6 +98,7 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
         debug(
           `There was no input type for table '${table.namespace.name}.${table.name}', so we're going to omit it from the create mutation.`
         );
+        return;
       }
       const tableTypeName = inflection.tableType(table);
 
