@@ -1,6 +1,5 @@
 import * as T from './pluginTypes';
 import debugFactory from 'debug';
-import { GraphQLList } from 'graphql';
 const debug = debugFactory('graphile-build-pg');
 
 const PostGraphileManyUpdatePlugin: T.Plugin = (
@@ -44,6 +43,7 @@ const PostGraphileManyUpdatePlugin: T.Plugin = (
       pgIntrospectionResultsByKind,
       pgSql: sql,
       graphql: {
+        GraphQLList,
         GraphQLNonNull,
         GraphQLInputObjectType,
         GraphQLString,
