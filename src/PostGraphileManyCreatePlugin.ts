@@ -142,21 +142,22 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
       const newPayloadHookSpec = {
         name: `mn${inflection.createPayloadType(table)}`,
         description: `The output of our many create \`${tableTypeName}\` mutation.`,
-        fields: ({ fieldWithHooks }) => {
+        fields: ({ fieldWithHooks }: {fieldWithHooks: any}) => {
           const tableName = inflection.tableFieldName(table);
+          const tableNamePlural = `${tableName}s`
           return {
             clientMutationId: {
               description:
                 'The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.',
               type: GraphQLString
             },
-            [tableName]: pgField(
+            [tableNamePlural]: pgField(
               build,
               fieldWithHooks,
-              tableName,
+              tableNamePlural,
               {
-                description: `The \`${tableTypeName}\` that was created by this mutation.`,
-                type: tableType
+                description: `The \`${tableTypeName}\`s that was created by this mutation.`,
+                type: new GraphQLList(tableType)
               },
               {
                 isPgCreatePayloadResultField: true,
@@ -192,7 +193,7 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
       function newFieldWithHooks (): T.FieldWithHooksFunction {
         return fieldWithHooks(
           fieldName,
-          context => {
+          (context:any) => {
             context.table = table;
             context.relevantAttributes = table.attributes.filter(
               attr =>
@@ -216,7 +217,7 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
         );
       }
 
-      async function resolver (_data, args, resolveContext, resolveInfo) {
+      async function resolver (_data:any, args:any, resolveContext:any, resolveInfo:any) {
         const { input } = args;
         const {
           table,
@@ -260,7 +261,7 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
         inputData.forEach((dataObj, i) => {
           relevantAttributes.forEach((attr: T.PgAttribute) => {
             const fieldName = inflection.column(attr);
-            const dataValue = dataObj[fieldName];
+            const dataValue = (dataObj as any)[fieldName];
             // On the first run, store the attribute values
             if (i === 0) {
               sqlColumns.push(sql.identifier(attr.name));
@@ -290,10 +291,10 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
             )})`
               : sql.fragment`default values`
           } returning *`;
-        let row;
+        let rows;
         try {
           await pgClient.query('SAVEPOINT graphql_mutation');
-          const rows = await viaTemporaryTable(
+          rows = await viaTemporaryTable(
             pgClient,
             sql.identifier(table.namespace.name, table.name),
             mutationQuery,
@@ -301,7 +302,6 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
             query
           );
 
-          row = rows[0];
           await pgClient.query('RELEASE SAVEPOINT graphql_mutation');
         } catch (e) {
           await pgClient.query('ROLLBACK TO SAVEPOINT graphql_mutation');
@@ -310,7 +310,7 @@ const PostGraphileManyCreatePlugin: T.Plugin = (
 
         return {
           clientMutationId: input.clientMutationId,
-          data: row
+          data: rows
         };
       }
 
