@@ -5,7 +5,7 @@
 
 This plugin implements mutations that allow many creates, updates, and deletes in a single transaction.
 
-To support, Please &#127775; if you used / like this library.
+To support, Please &#127775; if you used / like this library. Also, please consider donating (or buying me a coffee) and/or becoming a contributor (see below) to allow this plugin to be maintained regularly and to close all open issues.
 
 ## Roadmap
 Here's the plan:
@@ -61,6 +61,14 @@ The plugin creates new mutations that allow you to batch create, update, and del
 2. Commit your changes: `git commit -am "Add some feature"`
 3. Push to the branch: `git push origin my-new-feature`
 4. Submit a pull request.
+
+## Donations
+
+If you feel this project has helped you (it saved me time), please consider donating to better allow continued development and work on open issues for the community.
+
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?business=3JC38QXPNWYKS&no_recurring=0&item_name=Helping+the+community+one+step+at+a+time.&currency_code=USD)
+	
+I was not paid to work on this project, and really just wanted to help the community enhance their experience with the graphql and postgraphile realm.
 
 ## License
 
